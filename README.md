@@ -1,1 +1,1 @@
-# Setp base laravel
+# Setup base laravel
