@@ -22,6 +22,6 @@ bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.
 
 ## Maintainer
 
-- Further, maintained by [Websnack, William](https://websnack.dk)
+- [Websnack, William](https://websnack.dk)
 
 --- 
