@@ -12,8 +12,8 @@ Setups base composer files and other useful packages that are usually being inst
 
 --- 
 
-## Usage
-Copy/paste curl-command in an existing or empty project folder and enjoy magento2 ☕
+## Usage ☕
+
 ```bashpro shell script
 bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.sh)
 ```
