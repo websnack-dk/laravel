@@ -1,9 +1,9 @@
 <a href="https://github.com/websnack-dk/magento/graphs/commit-activity" target="_blank"><img src="https://img.shields.io/badge/Maintained-Yes-green" alt="Maintained - Yes" /></a>
 
-# Setup laravel  
+# Base laravel setup  
 
 Automatic install and set up a laravel project with DDEV-local. 
-Setups base composer files and other useful packages that are usually being installed separately.  
+Installs base composer packages with laravel breeze and other packages that is usually being installed separately.  
 
 ### Requirements
 
@@ -22,6 +22,7 @@ bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.
 
 ## Base composer packages
 
+- laravel/breeze
 - spatie/laravel-sitemap
 - spatie/laravel-cookie-consent
 - intervention/image
