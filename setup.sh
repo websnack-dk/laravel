@@ -90,11 +90,27 @@ setup_ddev() {
   ddev . mv laravel/* .
   ddev . rm -r webpack.mix.js         # Remove std files
   ddev . rm -r resources/css/app.css  # Remove std files
-  message "Laravel files added" "success"
+  ddev . rm -r tailwind.config.js  # Remove std files
 
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env"
   ddev . "sed -i -e 's/SESSION_LIFETIME=120/SESSION_LIFETIME=525600/g' .env" #Localhost - 1 year session lifetime
+  ddev . "php artisan key:generate"
+  message "Laravel config changed" "success"
+
+  # Retrieve base files
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
+  message "Helper files retrieved" "success"
+
+  # Setup mutagen
+  message "Setting up mutagen sync script in current ddev project"
+  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
+
+  ddev setup_base_laravel
+  ddev . composer install
+  message "Env file changed" "success"
 
   # Add variable name for browser sync (line 8)
   ddev . sed -i '' "8i\8 APP_BROWSER_SYNC=${DDEV_SITENAME}.ddev.site" .env
@@ -105,20 +121,11 @@ setup_ddev() {
   ddev . "sed -i '' '/DB_PASSWORD=db/d' .env"
   ddev . "sed -i '' '/DB_USERNAME=db/d' .env"
 
-  ddev . "php artisan key:generate"
+  ddev . artisan optimize
   message "Env file changed" "success"
 
-  # Retrieve base files
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
-
-  # Setup mutagen
-  message "Setting up mutagen sync script in current ddev project"
-  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
-
-  ddev setup_base_laravel
-  ddev . composer install
+  # Remove install setup once finished
+  ddev . rm -r .ddev/commands/web/setup_base_laravel
 
 }
 

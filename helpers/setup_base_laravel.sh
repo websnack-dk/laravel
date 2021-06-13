@@ -27,5 +27,4 @@ npm install
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 npx tailwindcss init --full
 
-
-
+npm run dev
