@@ -19,3 +19,13 @@ php artisan breeze:install
 composer require --dev barryvdh/laravel-ide-helper
 php artisan clear-compiled
 php artisan ide-helper:generate
+
+
+## NPM INSTALLS ##
+
+npm install
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+npx tailwindcss init --full
+
+
+

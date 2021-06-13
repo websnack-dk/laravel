@@ -71,12 +71,16 @@ setup_ddev() {
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel
 
   # Install laravel root directory
+  rm -rf .DS_Store --glob # ls -la (make sure hidden DS_ files are removed)
   ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
 
+  # Retrieve base files
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css --create-dirs
 
   # Setup mutagen
   message "Setting up mutagen sync script in current ddev project"
