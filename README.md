@@ -20,6 +20,15 @@ bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.
 
 --- 
 
+## Base composer packages
+
+- spatie/laravel-sitemap
+- spatie/laravel-cookie-consent
+- intervention/image
+
+
+--- 
+
 ## Maintainer
 
 - [Websnack, William](https://websnack.dk)
