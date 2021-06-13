@@ -114,7 +114,7 @@ setup_ddev() {
 
   ddev setup_base_laravel
   ddev . composer install
-  message "Env file changed" "success"
+  message "Composer installed" "success"
 
   # Add variable name for browser sync (line 8)
   # ddev . sed -i '' "6i\6 APP_BROWSER_SYNC=${DDEV_SITENAME}.ddev.site" .env # @todo: Not working
