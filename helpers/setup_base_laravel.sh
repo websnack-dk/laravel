@@ -2,12 +2,6 @@
 # bash script to setup base laravel
 #
 
-# Remove unused env settings when using ddev
-ddev . sed -i '' '/DB_HOST=db/d' .env
-ddev . sed -i '' '/DB_DATABASE=db/d' .env
-ddev . sed -i '' '/DB_PASSWORD=db/d' .env
-ddev . sed -i '' '/DB_USERNAME=db/d' .env
-ddev . sed -i '' '/DB_PORT=3306/d' .env
 
 # Add variable name for browser sync (line 8)
 ddev . sed -i '' "8 i\\
@@ -31,6 +25,8 @@ composer require --dev barryvdh/laravel-ide-helper
 php artisan clear-compiled
 php artisan ide-helper:generate
 
+php artisan optimize
+message "Composer installed" "success"
 
 ## NPM INSTALLS ##
 
