@@ -54,17 +54,28 @@ require_program "mutagen"
 
 setup_ddev() {
   logo
+
+  # Setup ddev folder
   ddev config --project-type=laravel --docroot=public --create-docroot
   message ".ddev directory creating" "success"
 
   # Change config to prevent port conflicts
-  message "Change config to prevent port conflict" "success"
   sed -i -e 's%router_http_port: "80"%router_http_port: "8080"%g' .ddev/config.yaml
   sed -i -e 's%router_https_port: "443"%router_https_port: "8443"%g' .ddev/config.yaml
+  message "Config changed to prevent port conflict" "success"
 
   # change php version
   message "Change to PHP 8.0" "success"
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
+
+  # Retrieve base files
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
+
+  # Setup mutagen
+  message "Setting up mutagen sync script in current ddev project"
+  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
 
   # Save command to setup composer etc.
   mkdir -p .ddev/commands/web/
@@ -77,21 +88,13 @@ setup_ddev() {
 
   # Install laravel root directory
   rm -rf .DS_Store # ls -la (make sure hidden DS_ files are removed)
+
+  ddev start
+
   ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
-
-  ddev start
-
-  # Retrieve base files
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
-
-  # Setup mutagen
-  message "Setting up mutagen sync script in current ddev project"
-  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
 
   ddev setup_base_laravel
   ddev . composer install
@@ -99,4 +102,3 @@ setup_ddev() {
 }
 
 setup_ddev
-
