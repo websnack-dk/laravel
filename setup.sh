@@ -68,13 +68,19 @@ setup_ddev() {
 
   # Save command to setup composer etc.
   mkdir -p .ddev/commands/web/
-  cat helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel
 
   # Install laravel root directory
   ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
-  sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env
+  ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
+
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php
+
+  # Setup mutagen
+  message "Setting up mutagen sync script in current ddev project"
+  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
 
   ddev start
   ddev setup_base_laravel
@@ -83,3 +89,5 @@ setup_ddev() {
 }
 
 setup_ddev
+
+ddev describe
