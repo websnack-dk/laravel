@@ -67,16 +67,19 @@ setup_ddev() {
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
 
   # Save command to setup composer etc.
-  mkdir -p .ddev/commands/web/
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel  --create-dirs  --silent
 
   # Install laravel root directory
+  rm -rf .DS_Store --glob # ls -la (make sure hidden DS_ files are removed)
   ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
 
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php
+  # Retrieve base files
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
 
   # Setup mutagen
   message "Setting up mutagen sync script in current ddev project"
