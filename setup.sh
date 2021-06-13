@@ -94,6 +94,10 @@ setup_ddev() {
 
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env"
+  ddev . "sed -i -e 's/SESSION_LIFETIME=120/SESSION_LIFETIME=525600/g' .env" #Localhost - 1 year session lifetime
+
+  # Add variable name for browser sync (line 8)
+  ddev . sed -i '' "8i\8 APP_BROWSER_SYNC=${DDEV_SITENAME}.ddev.site" .env
 
   # Remove unused env settings when using ddev
   ddev . "sed -i '' '/DB_HOST=db/d' .env"
