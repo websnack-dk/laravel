@@ -88,9 +88,13 @@ setup_ddev() {
   # install laravel
   ddev . composer create --prefer-dist laravel/laravel
   ddev . mv laravel/* .
+  ddev . mv laravel/.env.example .
+  ddev . mv laravel/.gitignore .
+  ddev rm -rf laravel
+
   ddev . rm -r webpack.mix.js         # Remove std files
   ddev . rm -r resources/css/app.css  # Remove std files
-  ddev . rm -r tailwind.config.js  # Remove std files
+  # ddev . rm -r tailwind.config.js  # Remove std files @todo: Fix later (Check base laravel setup script)
 
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env"
