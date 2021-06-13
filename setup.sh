@@ -71,9 +71,9 @@ setup_ddev() {
   cat helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel
 
   # Install laravel root directory
-  #ddev . composer create --prefer-dist laravel/laravel .
+  ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
-  sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env
+  sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env
   ddev . "php artisan key:generate"
 
   ddev start

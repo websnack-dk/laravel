@@ -3,3 +3,9 @@
 /.DS_Store
 /laravel
 /.env
+/public
+.env
+/.env-e
+/composer.json
+/composer.lock
+/vendor
