@@ -67,7 +67,13 @@ setup_ddev() {
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
 
   # Save command to setup composer etc.
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel  --create-dirs  --silent
+  mkdir -p .ddev/commands/web/
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel --silent
+
+  # Setup Redis
+  mkdir -p .ddev/redis/
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/redis.conf > .ddev/redis/redis.conf --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/docker-compose.redis.yaml > .ddev/docker-compose.redis.yaml --silent
 
   # Install laravel root directory
   rm -rf .DS_Store --glob # ls -la (make sure hidden DS_ files are removed)
