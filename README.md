@@ -27,6 +27,23 @@ bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.
 - spatie/laravel-cookie-consent
 - intervention/image
 
+---
+
+- barryvdh/laravel-ide-helper
+
+Add to `composer.json` 
+  
+```php
+"scripts": {
+    "post-update-cmd": [
+        "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+        "@php artisan ide-helper:generate",
+        "@php artisan ide-helper:meta"
+    ]
+},
+```
+
+
 
 --- 
 

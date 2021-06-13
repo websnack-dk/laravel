@@ -2,6 +2,17 @@
 # bash script to setup base laravel
 #
 
+# Remove unused env settings when using ddev
+sed -i '' '/DB_HOST=db/d' .env
+sed -i '' '/DB_DATABASE=db/d' .env
+sed -i '' '/DB_PASSWORD=db/d' .env
+sed -i '' '/DB_USERNAME=db/d' .env
+sed -i '' '/DB_PORT=3306/d' .env
+
+# Add variable name for browser sync (line 8)
+sed -i '' "8 i\\
+APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}" .env
+
 # replace db config
 curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/database.php --output  config/database.php  --silent
 

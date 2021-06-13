@@ -116,16 +116,6 @@ setup_ddev() {
   ddev . composer install
   message "Composer installed" "success"
 
-  # Add variable name for browser sync (line 8)
-  # ddev . sed -i '' "6i\6 APP_BROWSER_SYNC=${DDEV_SITENAME}.ddev.site" .env # @todo: Not working
-
-  # Remove unused env settings when using ddev
-  ddev . sed -i '' '/DB_HOST=db/d' .env
-  ddev . sed -i '' '/DB_DATABASE=db/d' .env
-  ddev . sed -i '' '/DB_PASSWORD=db/d' .env
-  ddev . sed -i '' '/DB_USERNAME=db/d' .env
-  ddev . sed -i '' '/DB_PORT=3306/d' .env
-
   ddev . artisan optimize
   message "Env file changed" "success"
 
