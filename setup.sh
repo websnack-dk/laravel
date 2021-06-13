@@ -68,6 +68,12 @@ setup_ddev() {
   message "Change to PHP 8.0" "success"
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
 
+  ddev start
+
+  # install laravel
+  ddev . composer create --prefer-dist laravel/laravel .
+  message "Laravel files added" "success"
+
   # Retrieve base files
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
@@ -89,9 +95,6 @@ setup_ddev() {
   # Install laravel root directory
   rm -rf .DS_Store # ls -la (make sure hidden DS_ files are removed)
 
-  ddev start
-
-  ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
