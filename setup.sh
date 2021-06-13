@@ -73,9 +73,12 @@ setup_ddev() {
   # Remove files in web-container
   ddev . --dir /var/www/html rm -rf index.html
   ddev . --dir /var/www/html rm -rf test
+  ddev . --dir /var/www/html rm -rf .idea
+  ddev . --dir /var/www/html rm -rf public
 
   # install laravel
-  ddev . composer create --prefer-dist laravel/laravel .
+  ddev . composer create --prefer-dist laravel/laravel
+  ddev . mv laravel/* .
   message "Laravel files added" "success"
 
   # Retrieve base files
