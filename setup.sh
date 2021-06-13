@@ -68,6 +68,15 @@ setup_ddev() {
   message "Change to PHP 8.0" "success"
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
 
+  # Save base command to setup composer etc.
+  mkdir -p .ddev/commands/web/
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel --silent
+
+  # Setup Redis
+  mkdir -p .ddev/redis/
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/redis.conf > .ddev/redis/redis.conf --silent
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/docker-compose.redis.yaml > .ddev/docker-compose.redis.yaml --silent
+
   ddev start
 
   # Remove files in web-container
@@ -79,7 +88,21 @@ setup_ddev() {
   # install laravel
   ddev . composer create --prefer-dist laravel/laravel
   ddev . mv laravel/* .
+  ddev . rm -r webpack.mix.js         # Remove std files
+  ddev . rm -r resources/css/app.css  # Remove std files
   message "Laravel files added" "success"
+
+  ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
+  ddev . "sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env"
+
+  # Remove unused env settings when using ddev
+  ddev . "sed -i '' '/DB_HOST=db/d' .env"
+  ddev . "sed -i '' '/DB_DATABASE=db/d' .env"
+  ddev . "sed -i '' '/DB_PASSWORD=db/d' .env"
+  ddev . "sed -i '' '/DB_USERNAME=db/d' .env"
+
+  ddev . "php artisan key:generate"
+  message "Env file changed" "success"
 
   # Retrieve base files
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
@@ -89,22 +112,6 @@ setup_ddev() {
   # Setup mutagen
   message "Setting up mutagen sync script in current ddev project"
   curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
-
-  # Save command to setup composer etc.
-  mkdir -p .ddev/commands/web/
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/setup_base_laravel.sh > .ddev/commands/web/setup_base_laravel --silent
-
-  # Setup Redis
-  mkdir -p .ddev/redis/
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/redis.conf > .ddev/redis/redis.conf --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/docker-compose.redis.yaml > .ddev/docker-compose.redis.yaml --silent
-
-  # Install laravel root directory
-  rm -rf .DS_Store # ls -la (make sure hidden DS_ files are removed)
-
-  ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
-  ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
-  ddev . "php artisan key:generate"
 
   ddev setup_base_laravel
   ddev . composer install
