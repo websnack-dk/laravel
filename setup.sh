@@ -58,12 +58,12 @@ setup_ddev() {
   message ".ddev directory creating" "success"
 
   # Change config to prevent port conflicts
-  message "Change config to prevent port conflict"
+  message "Change config to prevent port conflict" "success"
   sed -i -e 's%router_http_port: "80"%router_http_port: "8080"%g' .ddev/config.yaml
   sed -i -e 's%router_https_port: "443"%router_https_port: "8443"%g' .ddev/config.yaml
 
   # change php version
-  message "Change to PHP 8.0"
+  message "Change to PHP 8.0" "success"
   sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
 
   # Save command to setup composer etc.
@@ -76,11 +76,13 @@ setup_ddev() {
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/docker-compose/redis/docker-compose.redis.yaml > .ddev/docker-compose.redis.yaml --silent
 
   # Install laravel root directory
-  rm -rf .DS_Store --glob # ls -la (make sure hidden DS_ files are removed)
+  rm -rf .DS_Store # ls -la (make sure hidden DS_ files are removed)
   ddev . composer create --prefer-dist laravel/laravel .
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's%DB_CONNECTION=mysql%sDB_CONNECTION=ddev%g' .env"
   ddev . "php artisan key:generate"
+
+  ddev start
 
   # Retrieve base files
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
@@ -91,7 +93,6 @@ setup_ddev() {
   message "Setting up mutagen sync script in current ddev project"
   curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
 
-  ddev start
   ddev setup_base_laravel
   ddev . composer install
 
@@ -99,4 +100,3 @@ setup_ddev() {
 
 setup_ddev
 
-ddev describe
