@@ -12,6 +12,8 @@ sed -i "7s/^/APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}\n/" .env
 # replace db config
 curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/database.php --output  config/database.php  --silent
 
+composer remove laravel/sail --no-interaction
+
 composer require spatie/laravel-ray
 composer require spatie/laravel-sitemap
 composer require spatie/laravel-cookie-consent
