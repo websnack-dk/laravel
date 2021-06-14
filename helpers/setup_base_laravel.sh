@@ -5,9 +5,9 @@
 END="$(tput sgr0)"
 GREEN="$(tput setaf 2)"
 
-# Add variable name for browser sync (line 8)
-sed -i '' "8 i\\
-APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}" .env
+# Add variable name for browser sync
+sed -i "7s/^/APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}\n/" .env
+# echo -e "APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}" >> .env
 
 # replace db config
 curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/database.php --output  config/database.php  --silent

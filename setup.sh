@@ -121,6 +121,7 @@ setup_ddev() {
   ddev . sed -i '' '/DB_PORT=3306/d' .env
 
   message "Env file changed" "success"
+  message "Done. Happy coding :)" "success"
 
   # Remove install setup once finished
   ddev . rm -r .ddev/commands/web/setup_base_laravel
