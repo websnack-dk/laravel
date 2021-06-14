@@ -39,6 +39,8 @@ php artisan ide-helper:generate
 # remove sail
 composer remove laravel/sail --no-interaction --dev
 
+php artisan migrate
+
 php artisan optimize
 echo -e "${GREEN} "Composer installed" ${END}"
 
