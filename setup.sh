@@ -94,7 +94,6 @@ setup_ddev() {
 
   ddev . rm -r webpack.mix.js         # Remove std files
   ddev . rm -r resources/css/app.css  # Remove std files
-  # ddev . rm -r tailwind.config.js  # Remove std files @todo: Fix later (Check base laravel setup script)
 
   ddev . "cat .env.example | sed  -E 's/DB_(HOST|DATABASE|USERNAME|PASSWORD)=(.*)/DB_\1=db/g' > .env"
   ddev . "sed -i -e 's/DB_CONNECTION=mysql/DB_CONNECTION=ddev/g' .env"
@@ -105,7 +104,6 @@ setup_ddev() {
   # Retrieve base files
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/ray.php > ray.php                   --create-dirs  --silent
   curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/webpack.mix.js > webpack.mix.js     --create-dirs  --silent
-  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/app.css > resources/css/app.css     --create-dirs  --silent
   message "Helper files retrieved" "success"
 
   # Setup mutagen
@@ -114,7 +112,7 @@ setup_ddev() {
 
   ddev setup_base_laravel
   ddev . composer install
-  
+
   # Remove unused env settings when using ddev
   ddev . sed -i '' '/DB_HOST=db/d' .env
   ddev . sed -i '' '/DB_DATABASE=db/d' .env
