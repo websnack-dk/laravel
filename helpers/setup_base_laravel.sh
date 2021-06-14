@@ -40,6 +40,8 @@ php artisan optimize
 echo -e "${GREEN} "Composer installed" ${END}"
 
 ## NPM INSTALLS ##
+npm set audit false # turn off npm audit
+npm config set fund false
 
 npm install
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
@@ -49,7 +51,8 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 npm install @tailwindcss/typography
 npm install @tailwindcss/forms
 npm install @tailwindcss/aspect-ratio
-
+npm audit fix
 
 npm run dev
+
 echo -e "${GREEN} "Npm packages installed" ${END}"
