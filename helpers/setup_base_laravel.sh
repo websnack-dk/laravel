@@ -19,6 +19,9 @@ php artisan vendor:publish --provider="Spatie\CookieConsent\CookieConsentService
 
 composer require intervention/image
 
+# @todo: Later
+# composer require livewire/livewire
+
 composer require laravel/breeze --dev
 php artisan breeze:install
 

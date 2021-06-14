@@ -12,8 +12,8 @@ Installs base composer packages with laravel breeze and other packages that is u
 
 --- 
 
-## Usage ☕
-
+## Usage
+Copy/Paste command below and enjoy  ☕
 ```bashpro shell script
 bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.sh)
 ```
@@ -23,24 +23,25 @@ bash <(curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/setup.
 ## Base composer packages
 
 - laravel/breeze
+- spatie/laravel-ray
 - spatie/laravel-sitemap
 - spatie/laravel-cookie-consent
 - intervention/image
 
----
-
 - barryvdh/laravel-ide-helper
 
-Add to `composer.json` 
+Add manually to `composer.json` script area.  
   
 ```php
-"scripts": {
+# Script ...
+
     "post-update-cmd": [
         "Illuminate\\Foundation\\ComposerScripts::postUpdate",
         "@php artisan ide-helper:generate",
         "@php artisan ide-helper:meta"
     ]
-},
+    
+# ... 
 ```
 
 
