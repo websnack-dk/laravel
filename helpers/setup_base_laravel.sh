@@ -12,8 +12,6 @@ sed -i "7s/^/APP_BROWSER_SYNC=${DDEV_PROJECT}.${DDEV_TLD}\n/" .env
 # replace db config
 curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/database.php --output  config/database.php  --silent
 
-composer remove laravel/sail --no-interaction
-
 composer require spatie/laravel-ray
 composer require spatie/laravel-sitemap
 composer require spatie/laravel-cookie-consent
@@ -38,6 +36,9 @@ composer require --dev barryvdh/laravel-ide-helper
 php artisan clear-compiled
 php artisan ide-helper:generate
 
+# remove sail
+composer remove laravel/sail --no-interaction --dev
+
 php artisan optimize
 echo -e "${GREEN} "Composer installed" ${END}"
 
@@ -45,16 +46,16 @@ echo -e "${GREEN} "Composer installed" ${END}"
 npm set audit false # turn off npm audit
 npm config set fund false
 
-npm install
-npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+npm install --loglevel=silent --no-audit
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest --loglevel=silent --no-audit
 # npx tailwindcss init --full
 
 # @tailwindcss/typography
-npm install @tailwindcss/typography
-npm install @tailwindcss/forms
-npm install @tailwindcss/aspect-ratio
-npm audit fix
+npm install @tailwindcss/typography    --loglevel=silent --no-audit
+npm install @tailwindcss/forms         --loglevel=silent --no-audit
+npm install @tailwindcss/aspect-ratio  --loglevel=silent --no-audit
+npm audit fix --force --silent
 
-npm run dev
+npm run dev --loglevel=silent --no-audit
 
 echo -e "${GREEN} "Npm packages installed" ${END}"
