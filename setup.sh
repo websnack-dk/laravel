@@ -60,13 +60,7 @@ setup_ddev() {
   message ".ddev directory creating" "success"
 
   # Change config to prevent port conflicts
-  sed -i -e 's%router_http_port: "80"%router_http_port: "8080"%g' .ddev/config.yaml
-  sed -i -e 's%router_https_port: "443"%router_https_port: "8443"%g' .ddev/config.yaml
-  message "Config changed to prevent port conflict" "success"
-
-  # change php version
-  message "Change to PHP 8.0" "success"
-  sed -i -e 's%php_version: "7.4"%php_version: "8.0"%g' .ddev/config.yaml
+  curl -s https://raw.githubusercontent.com/websnack-dk/laravel/main/helpers/config.local.yaml > .ddev/config.local.yaml --silent
 
   # Save base command to setup composer etc.
   mkdir -p .ddev/commands/web/
