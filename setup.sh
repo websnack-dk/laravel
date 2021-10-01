@@ -50,7 +50,7 @@ logo() {
 }
 
 require_program "ddev"
-require_program "mutagen"
+# require_program "mutagen"
 
 setup_ddev() {
   logo
@@ -101,8 +101,8 @@ setup_ddev() {
   message "Helper files retrieved" "success"
 
   # Setup mutagen
-  message "Setting up mutagen sync script in current ddev project"
-  curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
+  # message "Setting up mutagen sync script in current ddev project"
+  # curl https://raw.githubusercontent.com/williamengbjerg/ddev-mutagen/master/setup.sh | bash
 
   ddev setup_base_laravel
   ddev . composer install
